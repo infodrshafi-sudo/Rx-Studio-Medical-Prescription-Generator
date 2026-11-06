@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0f766e">
+  <meta name="theme-color" content="#193B63">
   <meta name="robots" content="noindex,nofollow">
   <meta name="description" content="Private, browser-based prescription writer with searchable Indian medicine catalogue and printable A4 prescription.">
   <title>Rx Studio — Dr. Muhammad Shafi K</title>
@@ -17,7 +17,7 @@
     <header class="app-header">
       <div class="brand-wrap">
         <div class="brand-icon" aria-hidden="true">℞</div>
-        <div><div class="brand-title">Rx Studio <span class="brand-version">03</span></div><div class="brand-subtitle">A calmer way to prescribe</div></div>
+        <div><div class="brand-title">Rx Studio <span class="brand-version">04</span></div><div class="brand-subtitle">A calmer way to prescribe</div></div>
       </div>
       <div class="header-actions">
         <span class="privacy-chip" title="Patient data stays in this browser session; it is not sent to a server"><span class="privacy-dot"></span> Browser-only patient data</span>
@@ -114,7 +114,7 @@
             </div>
             <p class="helper-note">Download PDF creates a file on this device. WhatsApp sharing uses your device’s native share menu when supported; otherwise download and attach the PDF in WhatsApp manually. Patient details are not sent to an app server.</p>
           </div>
-          <div class="stage-footer"><button type="button" class="btn btn-quiet" data-next="medicines">← Back to medicines</button><button type="button" class="btn btn-primary" id="btn-preview-stage">View completed prescription →</button></div>
+          <div class="stage-footer"><button type="button" class="btn btn-quiet" data-next="medicines">← Back to medicines</button><button type="button" class="btn btn-primary desktop-preview-action" id="btn-preview-stage">View completed prescription →</button></div>
         </div>
       </section>
 
@@ -122,15 +122,15 @@
         <div class="preview-topbar"><div><span class="preview-eyebrow">LIVE DOCUMENT</span><h2>Prescription preview</h2></div><div class="preview-actions"><button type="button" class="btn btn-quiet btn-sm" id="btn-reference">Load sample</button><button type="button" class="btn btn-primary btn-sm" id="btn-print">Print ↗</button></div></div>
         <div class="print-sheet-wrap">
           <article id="prescription" class="prescription-sheet" aria-label="Prescription page">
-            <div class="rx-top-stripe"></div>
+            
             <header class="rx-header"><div class="rx-doctor"><h2 id="rx-doctor-name">Dr. Muhammad Shafi K</h2><div class="rx-quals" id="rx-quals">MBBS (Govt Medical College Thrissur) · DNB Anesthesia &amp; Critical Care Medicine (NBEMS)</div><span class="rx-reg" id="rx-reg">KSMC Reg No: 82692</span><div class="rx-clinic" id="rx-clinic" hidden></div></div><div class="rx-visit"><strong id="rx-mode">OP Consultation</strong><span id="rx-date">Date: —</span><span id="rx-time">Time: —</span></div></header>
-            <section class="rx-patient-bar"><div class="rx-info"><span class="rx-label">PATIENT NAME</span><strong id="rx-patient-name">—</strong></div><div class="rx-info"><span class="rx-label">AGE / GENDER</span><strong id="rx-age-gender">—</strong></div><div class="rx-info"><span class="rx-label">WEIGHT / HEIGHT</span><strong id="rx-weight-height">—</strong></div></section>
+            <section class="rx-patient-bar"><div class="rx-info"><span class="rx-label">PATIENT</span><strong id="rx-patient-name">—</strong></div><div class="rx-info"><span class="rx-label">AGE / SEX</span><strong id="rx-age-gender">—</strong></div><div class="rx-info"><span class="rx-label">WEIGHT / HEIGHT</span><strong id="rx-weight-height">—</strong></div></section>
             <div id="rx-vitals" class="rx-vitals"></div>
-            <section class="rx-assessment"><div><span class="rx-label">CLINICAL HISTORY</span><p id="rx-history">—</p></div><div><span class="rx-label">DIAGNOSIS</span><p id="rx-diagnosis">—</p></div></section>
+            <section class="rx-assessment"><h3>CLINICAL SUMMARY</h3><div><span class="rx-label">History</span><p id="rx-history">—</p></div><div><span class="rx-label">Diagnosis</span><p id="rx-diagnosis">—</p></div></section>
             <section class="rx-med-section"><h3><span class="rx-symbol">℞</span> PRESCRIBED MEDICATIONS</h3><div id="rx-medicines" class="rx-med-list"><p class="rx-muted">Medicines will appear here as you add them.</p></div></section>
-            <section class="rx-plan" id="rx-plan"><h3>TREATMENT PLAN &amp; ADVICE</h3><div id="rx-advice"></div></section>
+            <section class="rx-plan" id="rx-plan"><h3>TREATMENT PLAN &amp; FOLLOW-UP</h3><div id="rx-advice"></div></section>
             <footer class="rx-sign"><img id="rx-signature-img" class="rx-signature-img" alt="Doctor’s uploaded signature" hidden><strong id="rx-sign-name">Dr. Muhammad Shafi K</strong><span id="rx-sign-reg">KSMC Reg No: 82692</span></footer>
-            <div class="rx-page-footer"><span id="rx-footer-doctor">Dr. Muhammad Shafi K — Digital Medical Prescription</span><span>Not valid for MLC / medico-legal purposes.</span></div>
+            <div class="rx-page-footer"><span id="rx-footer-doctor">Dr. Muhammad Shafi K — Digital Medical Prescription</span><span>This prescription is issued for routine clinical consultation and treatment only. It is not intended for use as a medico-legal certificate or medico-legal case (MLC) document.</span></div>
           </article>
         </div>
         <div class="preview-note"><span aria-hidden="true">🔒</span> Preview is generated in this browser. Patient data is not automatically saved or uploaded.</div>
@@ -139,7 +139,7 @@
     <footer class="app-footer">Rx Studio <span>•</span> Prescription composer <span>•</span> Doctor review required before issuing</footer>
   </div>
 
-  <button type="button" class="mobile-preview-btn" id="btn-mobile-preview">↗ Preview prescription</button>
+  <button type="button" class="mobile-preview-btn" id="btn-mobile-preview" hidden>↗ Preview prescription</button>
 
   <dialog id="profile-dialog" class="modal"><form method="dialog" id="profile-form"><div class="modal-header"><div><h2>Doctor profile</h2><p>Shown on every prescription · Saved only in your browser</p></div><button type="button" class="icon-button" data-close="profile-dialog" aria-label="Close">×</button></div><div class="modal-fields"><label class="field"><span>Doctor name</span><input name="name" type="text" required></label><label class="field"><span>Qualifications &amp; specialty</span><textarea name="credentials" rows="3"></textarea></label><label class="field"><span>Medical registration</span><input name="registration" type="text"></label><label class="field"><span>Clinic / hospital (optional)</span><input name="clinic" type="text"></label><label class="field"><span>Contact / address (optional)</span><input name="contact" type="text"></label><div class="signature-field"><span class="signature-field-label">Doctor signature · PNG image (optional)</span><input type="file" id="signature-file" accept=".png,image/png"><div class="signature-preview-wrap"><img id="signature-profile-preview" alt="Uploaded doctor signature preview" hidden><span id="signature-empty">No signature uploaded</span></div><button type="button" class="btn btn-quiet btn-sm" id="remove-signature">Remove signature</button><small>Saved only in this browser with the doctor profile; included on printed prescriptions.</small></div></div><div class="modal-actions"><button type="button" class="btn btn-quiet" data-close="profile-dialog">Cancel</button><button type="submit" class="btn btn-primary" id="save-profile">Save doctor profile</button></div></form></dialog>
   <input id="import-file" type="file" accept=".rxp,application/json" hidden>

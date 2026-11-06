@@ -9,7 +9,7 @@
   const PROFILE_KEY = 'rx-studio-doctor-profile-v1';
   const defaultDoctor = {
     name: 'Dr. Muhammad Shafi K',
-    credentials: 'MBBS (Govt Medical College Thrissur) · DNB Anesthesia & Critical Care Medicine (NBEMS)',
+    credentials: 'MBBS (Govt. Medical College, Thrissur) · DNB – Anaesthesia & Critical Care Medicine (NBEMS, New Delhi)',
     registration: 'KSMC Reg No: 82692', clinic:'', contact:'', signature:'./assets/default-signature.png'
   };
   const makeInitial = () => {
@@ -18,7 +18,7 @@
       patient:{name:'',age:'',gender:'',weight:'',height:''},vitals:{bp:'',pulse:'',rr:'',spo2:'',temp:''},history:'',diagnosis:'',medicines:[],
       plan:{advice:'',investigations:'',followup:'',reviewDate:''}};
   };
-  function loadDoctor(){try{const val=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');return val&&typeof val==='object'?{...defaultDoctor,...val,signature:(!val.signature && val.signature!=='none')?defaultDoctor.signature:val.signature}:{...defaultDoctor};}catch{return {...defaultDoctor};}}
+  function loadDoctor(){try{const val=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');return val&&typeof val==='object'?{...defaultDoctor,...val,credentials:val.credentials==='MBBS (Govt Medical College Thrissur) · DNB Anesthesia & Critical Care Medicine (NBEMS)'?defaultDoctor.credentials:val.credentials,signature:(!val.signature && val.signature!=='none')?defaultDoctor.signature:val.signature}:{...defaultDoctor};}catch{return {...defaultDoctor};}}
   let state=makeInitial();
   const cachedBuckets = new Map();
   let lastResults=[], searchTimer=0, searchToken=0, toastTimer=0;
@@ -123,7 +123,7 @@
     syncFields();notify('Reference sample loaded (illustration only).');});
   $('#btn-new').addEventListener('click',()=>{if(!window.confirm('Start a new prescription? Current unsaved patient details will be cleared.'))return;state=makeInitial();syncFields();$('#medicine-search').value='';$('#search-results').innerHTML='';$('#search-hint').textContent='Type at least two characters to start searching.';switchStage('patient');notify('New blank prescription ready.');});
   $('#btn-mobile-preview').addEventListener('click',()=>{const visible=$('#preview-column').classList.toggle('mobile-visible');$('.editor').classList.toggle('mobile-hide',visible);$('#btn-mobile-preview').textContent=visible?'← Back to editor':'↗ Preview prescription';window.scrollTo({top:0,behavior:'smooth'});});
-  $('#btn-preview-stage').addEventListener('click',()=>{if(window.innerWidth<=1060){$('#preview-column').classList.add('mobile-visible');$('.editor').classList.add('mobile-hide');$('#btn-mobile-preview').textContent='← Back to editor';window.scrollTo({top:0,behavior:'smooth'});}else{$('#preview-column').scrollIntoView({behavior:'smooth',block:'start'});}});
+  $('#btn-preview-stage').addEventListener('click',()=>{if(window.innerWidth<=1060){switchStage('plan');}else{$('#preview-column').scrollIntoView({behavior:'smooth',block:'start'});}});
 
   // Doctor profile is the only browser-persisted setting. No patient data in
   // localStorage, indexedDB, cookies, service workers or network POSTs.

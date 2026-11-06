@@ -1,6 +1,6 @@
-# Rx Studio V3 — Medical Prescription Generator
+# Rx Studio V4 — Medical Prescription Generator
 
-Modern, browser-only prescription writing app for **Dr. Muhammad Shafi K**. Designed after the user-supplied "Medical Prescription – Modern Style.pdf".
+Classic Medical Navy-themed, browser-only prescription writing app for **Dr. Muhammad Shafi K**. Designed after the user-supplied "Medical Prescription – Modern Style.pdf".
 
 ## Features
 
@@ -14,7 +14,7 @@ Modern, browser-only prescription writing app for **Dr. Muhammad Shafi K**. Desi
 - Type a number such as `3` for **3 days / 3 weeks / 3 months** duration suggestions
 - Clickable special instruction suggestions, with multiple instructions supported
 - Investigations, advice, follow-up, optional review date
-- Live preview styled like the provided A4 sample; **Download PDF** creates a PDF directly, **Print** uses the browser print dialog, and **Share PDF to WhatsApp** uses native file sharing when available (otherwise downloads the PDF for manual attachment)
+- Desktop live preview and A4 export styled after the redesigned MAJEED prescription reference; **Download PDF** creates a PDF directly, **Print** uses the browser print dialog, and **Share PDF to WhatsApp** uses native file sharing when available (otherwise downloads the PDF for manual attachment)
 - Editable doctor profile saved only in this browser, with default doctor qualifications **Govt Medical College Thrissur** and the user-provided default signature
 - Encrypted `.rxp` export/import using AES-256-GCM and password-derived keys
 - No account, no runtime dependency, no patient data sent to the application server, no third-party scripts
@@ -97,3 +97,16 @@ The doctor profile/signature is local to the device/browser. It does not automat
 - PDFs are generated in the browser as high-resolution rasterized pages (they are not searchable/selectable text). On supported mobile browsers, the native share sheet can send the PDF to WhatsApp. On unsupported browsers, a PDF download is provided for manual sharing.
 - Medicine catalogue is provided for clinical cross-checking only, not clinical dosage recommendations. All prescriptions must be reviewed and approved by the prescribing doctor.
 - The disclaimer appears exactly as: **Not valid for MLC / medico-legal purposes.** A disclaimer does not itself alter legal record-keeping responsibilities.
+
+## Version 4 (November 2026): redesigned prescription and navy theme
+
+- Classic Medical Navy `#193B63` replaces teal throughout the site, including buttons, navigation, forms, doctor profile and A4 prescription output.
+- New compact A4 PDF renderer following `Prescription_MAJEED_Redesigned (1).pdf`: navy doctor header and date, pale patient panel, clinical summary, numbered medicine rows with brand/generic/dose/duration, advice/investigations/follow-up, small medico-legal footer.
+- Doctor signature dynamically follows the last content section when there is space; if not, it moves to the next page. Long prescriptions use automatically numbered continuation pages with patient name and consultation date.
+- Mobile (Android/iPhone-sized viewport): hidden Preview action and live preview panel; direct Download PDF, Share PDF to WhatsApp and Print remain in the Finish & export section. Desktop keeps the visual preview.
+- Existing encrypted drafts, medicine indexes and doctor profile storage are not removed or changed.
+- Printed output uses native browser print; the dedicated **Download PDF** / **WhatsApp PDF** actions use the new standalone multi-page PDF renderer. They are independently rendered, so small font/spacing differences are possible.
+
+### Security and medical use
+
+The included default signature is a public website asset. **Do not treat a public signature image as authentication or a cryptographically signed prescription.** Add access controls and a reviewed deployment process before use with actual patients; verify medicine composition and regimen against a current authoritative source.
