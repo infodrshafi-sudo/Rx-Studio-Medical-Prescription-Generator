@@ -9,8 +9,8 @@
   const PROFILE_KEY = 'rx-studio-doctor-profile-v1';
   const defaultDoctor = {
     name: 'Dr. Muhammad Shafi K',
-    credentials: 'MBBS (Govt MC Thrissur) · DNB Anesthesia & Critical Care Medicine (NBEMS)',
-    registration: 'KSMC Reg No: 82692', clinic:'', contact:'', signature:''
+    credentials: 'MBBS (Govt Medical College Thrissur) · DNB Anesthesia & Critical Care Medicine (NBEMS)',
+    registration: 'KSMC Reg No: 82692', clinic:'', contact:'', signature:'./assets/default-signature.png'
   };
   const makeInitial = () => {
     const now = new Date(), stamp = [now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
@@ -18,7 +18,7 @@
       patient:{name:'',age:'',gender:'',weight:'',height:''},vitals:{bp:'',pulse:'',rr:'',spo2:'',temp:''},history:'',diagnosis:'',medicines:[],
       plan:{advice:'',investigations:'',followup:'',reviewDate:''}};
   };
-  function loadDoctor(){try{const val=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');return val&&typeof val==='object'?{...defaultDoctor,...val}:{...defaultDoctor};}catch{return {...defaultDoctor};}}
+  function loadDoctor(){try{const val=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');return val&&typeof val==='object'?{...defaultDoctor,...val,signature:(!val.signature && val.signature!=='none')?defaultDoctor.signature:val.signature}:{...defaultDoctor};}catch{return {...defaultDoctor};}}
   let state=makeInitial();
   const cachedBuckets = new Map();
   let lastResults=[], searchTimer=0, searchToken=0, toastTimer=0;
@@ -39,7 +39,7 @@
     $('#rx-medicines').innerHTML=s.medicines.length?s.medicines.map((m,i)=>`<div class="rx-med-card"><span class="rx-med-serial">${i+1}.</span><div class="rx-med-main"><div class="rx-med-title">${esc(m.brand||'Unnamed medicine')}</div>${m.generic?`<div class="rx-med-generic">${esc(m.generic)}</div>`:''}${m.instructions?`<div class="rx-med-instruction">${esc(m.instructions.replace(/[;\s]+$/g,''))}</div>`:''}</div><div class="rx-med-regimen">${m.dose?`<span class="rx-med-dose">${esc(m.dose)}</span>`:''}${m.duration?`<div class="rx-med-duration">${esc(m.duration)}</div>`:''}</div></div>`).join(''):'<p class="rx-muted">Medicines will appear here as you add them.</p>';
     const plan=[['Advice',s.plan.advice],['Investigations',s.plan.investigations],['Date',s.plan.reviewDate?prettyDate(s.plan.reviewDate):''],['Follow up',s.plan.followup]].filter(([,val])=>String(val).trim());
     $('#rx-plan').hidden=plan.length===0;$('#rx-advice').innerHTML=plan.map(([label,val])=>`<p><strong>${esc(label)}:</strong> ${esc(val)}</p>`).join('');
-    const sign=$('#rx-signature-img');const sig=String(s.doctor.signature||'');if(/^data:image\/png;base64,[a-z0-9+/=]+$/i.test(sig)){sign.src=sig;sign.hidden=false;}else{sign.removeAttribute('src');sign.hidden=true;}
+    const sign=$('#rx-signature-img');const sig=String(s.doctor.signature||'');if(sig==='./assets/default-signature.png'||/^data:image\/png;base64,[a-z0-9+/=]+$/i.test(sig)){sign.src=sig;sign.hidden=false;}else{sign.removeAttribute('src');sign.hidden=true;}
     $('#rx-sign-name').textContent=s.doctor.name||'';$('#rx-sign-reg').textContent=s.doctor.registration||'';$('#rx-footer-doctor').textContent=(s.doctor.name||'Doctor')+' — Digital Medical Prescription';
     const count=s.medicines.length;$('#nav-med-count').textContent=count;$('#selected-count').textContent=count;
   }
@@ -92,7 +92,7 @@
     if(m.form==='Injection')return [`${n} mg IV OD`,`${n} mg IV BD`,`${n} mg IM STAT`,`${n} mL IV STAT`,`${n} mL IM OD`,`${n} units SC OD`,`${n} mcg/kg/min IV infusion`,`As prescribed (specify route)`];
     if(m.form==='Topical')return ['Apply once daily','Apply BD','Apply TDS','Apply thin layer BD','Apply at bedtime','Apply locally SOS'];
     if(m.form==='Tablet')return [`${n}-0-0`,`${n}-0-${n}`,`${n}-${n}-${n}`,`0-0-${n}`,`${n}-${n}-0`,`0-${n}-0`,`${n} tablet OD`,`${n} tablet SOS`,`${n} tablet HS`,`${n} tablet QID`,`${n} tablet every 6 hours`];
-    return [`${n} OD`,`${n} BD`,`${n} TDS`,`${n} QID`,`${n} SOS`,`${n} STAT`,`${n} every 8 hours`];
+    return [`${n} OD`,`${n} BD`,`${n} TDS`,`${n} QID`,`${n} HS`,`${n} SOS`,`${n} STAT`,`${n} every 8 hours`];
   }
   function durationSuggestions(m){let n=(m.duration.match(/\d+(?:\.\d+)?/)||[])[0]||'3';return [`${n} days`,`${n} weeks`,`${n} months`,`${n} doses`,`${n} hours`,'Single dose','Until review','As directed'];}
   function instructionSuggestions(m){const fragments=m.instructions.split(';');const last=fragments.at(-1).trim().toLowerCase();let candidates=standardInstructions.filter(v=>v.toLowerCase().includes(last));if(m.form==='Liquid')candidates.sort((a,b)=>Number(b.startsWith('Shake'))-Number(a.startsWith('Shake')));if(m.form==='Inhaler')candidates.sort((a,b)=>Number(b.startsWith('Rinse'))-Number(a.startsWith('Rinse')));if(!last)candidates=candidates.slice(0,10);return candidates.slice(0,13);}
@@ -105,9 +105,13 @@
     if(kind==='instructions'){
       const prior=med.instructions.split(';');prior[prior.length-1]=value;med.instructions=prior.map(x=>x.trim()).filter(Boolean).join('; ')+'; ';
     }else med[kind]=value;
-    const field=$(`[data-med-field="${kind}"]`,editor);field.value=med[kind];renderPreview();field.focus();showSuggestions(editor,med,kind);
+    const field=$(`[data-med-field="${kind}"]`,editor);field.value=med[kind];renderPreview();$$('.suggestions',editor).forEach(p=>p.innerHTML='');field.blur();
   });
 
+  document.addEventListener('pointerdown',e=>{if(!e.target.closest('.med-field'))$$('.suggestions').forEach(p=>p.innerHTML='');});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.suggestions').forEach(p=>p.innerHTML='');});
+  // Allow PDF exporter to read current in-memory prescription without saving patient data.
+  window.RxStudioGetSnapshot=()=>JSON.parse(JSON.stringify(state));
   function printRx(){if(!state.patient.name.trim()){if(!window.confirm('Patient name is empty. Print the prescription anyway?'))return;}if(!state.medicines.length){if(!window.confirm('No medications have been added. Print anyway?'))return;}window.print();}
   $('#btn-print').addEventListener('click',printRx);$('#btn-print-panel').addEventListener('click',printRx);
   $('#btn-reference').addEventListener('click',()=>{if(state.patient.name||state.medicines.length){if(!window.confirm('Replace current prescription with the sample shown in the reference PDF?'))return;}const now=state.visit;
@@ -124,10 +128,10 @@
   // Doctor profile is the only browser-persisted setting. No patient data in
   // localStorage, indexedDB, cookies, service workers or network POSTs.
   let pendingSignature='';
-  function showSignatureProfile(){const prev=$('#signature-profile-preview');prev.hidden=!pendingSignature;if(pendingSignature)prev.src=pendingSignature;else prev.removeAttribute('src');$('#signature-empty').hidden=!!pendingSignature;}
+  function showSignatureProfile(){const prev=$('#signature-profile-preview');prev.hidden=(!pendingSignature||pendingSignature==='none');if(pendingSignature&&pendingSignature!=='none')prev.src=pendingSignature;else prev.removeAttribute('src');$('#signature-empty').hidden=!!pendingSignature&&pendingSignature!=='none';}
   $('#btn-profile').addEventListener('click',()=>{const form=$('#profile-form');Object.entries(state.doctor).forEach(([key,val])=>{if(key!=='signature'&&form.elements.namedItem(key))form.elements.namedItem(key).value=val;});pendingSignature=state.doctor.signature||'';$('#signature-file').value='';showSignatureProfile();$('#profile-dialog').showModal();});
   $('#signature-file').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;if(f.type!=='image/png'||f.size>3_000_000){notify('Choose a PNG signature image under 3 MB.');e.target.value='';return;}try{const bytes=new Uint8Array(await f.slice(0,8).arrayBuffer());if([137,80,78,71,13,10,26,10].some((v,i)=>bytes[i]!==v))throw Error('Not a PNG file');const bitmap=await createImageBitmap(f);const canvas=document.createElement('canvas');const ratio=Math.min(1,700/bitmap.width,200/bitmap.height);canvas.width=Math.max(1,Math.round(bitmap.width*ratio));canvas.height=Math.max(1,Math.round(bitmap.height*ratio));canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();const png=canvas.toDataURL('image/png');if(png.length>750000)throw Error('PNG too large after resizing');pendingSignature=png;showSignatureProfile();notify('Signature ready. Save doctor profile to apply.');}catch(err){console.error(err);notify('Could not process PNG. Try a smaller signature image.');}e.target.value='';});
-  $('#remove-signature').addEventListener('click',()=>{pendingSignature='';showSignatureProfile();});
+  $('#remove-signature').addEventListener('click',()=>{pendingSignature='none';showSignatureProfile();});
   $$('[data-close]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.close).close()));
   $('#profile-form').addEventListener('submit',e=>{e.preventDefault();const elements=e.currentTarget.elements;state.doctor={name:elements.namedItem('name').value.trim(),credentials:elements.namedItem('credentials').value.trim(),registration:elements.namedItem('registration').value.trim(),clinic:elements.namedItem('clinic').value.trim(),contact:elements.namedItem('contact').value.trim(),signature:pendingSignature};if(!state.doctor.name){notify('Doctor name is required');return;}try{localStorage.setItem(PROFILE_KEY,JSON.stringify(state.doctor))}catch{notify('Profile updated for this session only; browser storage is full or unavailable.');}renderPreview();$('#profile-dialog').close();notify('Doctor profile saved in this browser.');});
 

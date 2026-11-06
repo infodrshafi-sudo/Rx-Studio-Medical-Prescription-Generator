@@ -1,4 +1,4 @@
-# Rx Studio — Medical Prescription Generator
+# Rx Studio V3 — Medical Prescription Generator
 
 Modern, browser-only prescription writing app for **Dr. Muhammad Shafi K**. Designed after the user-supplied "Medical Prescription – Modern Style.pdf".
 
@@ -8,16 +8,17 @@ Modern, browser-only prescription writing app for **Dr. Muhammad Shafi K**. Desi
 - Patient name, age, gender, weight, height, BP, pulse, oxygen saturation, temperature, clinical history, diagnosis
 - **244,874 deduplicated medicine/formulation records**, transformed from the uploaded 256,476-row Indian medicine dataset
 - Search medicine **brand** or **generic (short_composition1 + short_composition2)** without a paid service, server or D1 configuration
-- Medicine results show brand, generic ingredients with strengths, pack and manufacturer; discontinued entries are hidden by default
+- Medicine results show brand, generic ingredients with strengths, pack and manufacturer; discontinued entries are excluded from the catalogue
 - Prescribe multiple drugs, amend brand/composition/formulation, remove or duplicate medicines
 - Clickable **dosage/volume/frequency** suggestions for tablets, liquids, eye/ear drops, inhalers, injections and topical drugs
 - Type a number such as `3` for **3 days / 3 weeks / 3 months** duration suggestions
 - Clickable special instruction suggestions, with multiple instructions supported
 - Investigations, advice, follow-up, optional review date
-- Live preview styled like the provided A4 sample; **Print / Save PDF** opens the browser print dialogue (choose **Save as PDF**)
-- Editable doctor profile saved only in this browser
+- Live preview styled like the provided A4 sample; **Download PDF** creates a PDF directly, **Print** uses the browser print dialog, and **Share PDF to WhatsApp** uses native file sharing when available (otherwise downloads the PDF for manual attachment)
+- Editable doctor profile saved only in this browser, with default doctor qualifications **Govt Medical College Thrissur** and the user-provided default signature
 - Encrypted `.rxp` export/import using AES-256-GCM and password-derived keys
 - No account, no runtime dependency, no patient data sent to the application server, no third-party scripts
+- `HS` frequency, autocomplete menus close on selection, MLC/medico-legal disclaimer in the prescription footer
 
 ## Easy GitHub → Cloudflare Pages deployment
 
@@ -89,3 +90,10 @@ The included source dataset contains 256,476 rows. Identical `(name, composition
 3. Run `./PUSH_TO_GITHUB.ps1 -RepositoryUrl "https://github.com/infodrshafi-sudo/Rx-Studio-Medical-Prescription-Generator.git"` (replace with your actual GitHub URL if different). A Cloudflare Pages project connected to the branch should redeploy.
 
 The doctor profile/signature is local to the device/browser. It does not automatically sync between devices. Review medication composition, doses, and patient information before issuance; the catalogue is not a clinical decision-support database.
+
+## Important privacy and clinical safeguards
+
+- The requested default signature is packaged in `assets/default-signature.png`. **Any visitor to a publicly hosted site can access or copy this image.** Restrict the Cloudflare site to authorized staff before using actual patient information or issuing prescriptions. For a public site, remove the bundled file and use the optional doctor-profile local signature upload instead.
+- PDFs are generated in the browser as high-resolution rasterized pages (they are not searchable/selectable text). On supported mobile browsers, the native share sheet can send the PDF to WhatsApp. On unsupported browsers, a PDF download is provided for manual sharing.
+- Medicine catalogue is provided for clinical cross-checking only, not clinical dosage recommendations. All prescriptions must be reviewed and approved by the prescribing doctor.
+- The disclaimer appears exactly as: **Not valid for MLC / medico-legal purposes.** A disclaimer does not itself alter legal record-keeping responsibilities.
