@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Private, browser-based prescription writer with searchable Indian medicine catalogue and printable A4 prescription.">
+  <title>Rx Studio — Dr. Muhammad Shafi K</title>
+  <link rel="stylesheet" href="./assets/styles.css">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <script src="./assets/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand-wrap">
+        <div class="brand-icon" aria-hidden="true">℞</div>
+        <div><div class="brand-title">Rx Studio <span class="brand-version">01</span></div><div class="brand-subtitle">A calmer way to prescribe</div></div>
+      </div>
+      <div class="header-actions">
+        <span class="privacy-chip" title="Patient data stays in this browser session; it is not sent to a server"><span class="privacy-dot"></span> Browser-only patient data</span>
+        <button type="button" class="btn btn-quiet" id="btn-profile"><span aria-hidden="true">⚙</span> Doctor profile</button>
+        <button type="button" class="btn btn-outline" id="btn-new">New prescription</button>
+      </div>
+    </header>
+    <div class="top-context"><span class="top-context-mark"></span> Prescription workspace <span class="sep">/</span> <strong id="context-date">New consultation</strong><div class="context-right">Made for everyday clinical practice</div></div>
+
+    <main class="workspace">
+      <section class="editor" aria-label="Prescription editor">
+        <div class="section-hero">
+          <div><p class="eyebrow">CLINICAL DOCUMENTATION</p><h1>Create a prescription<span class="title-dot">.</span></h1><p class="lead">Enter consultation details, find medicines, and generate a clean prescription in moments.</p></div>
+          <div class="hero-glyph" aria-hidden="true">✳</div>
+        </div>
+
+        <nav class="stage-nav" aria-label="Prescription stages">
+          <button class="stage active" type="button" data-stage="patient" aria-current="step"><span class="stage-number">01</span><span>Consultation</span></button>
+          <button class="stage" type="button" data-stage="medicines"><span class="stage-number">02</span><span>Medicines <span class="med-count" id="nav-med-count">0</span></span></button>
+          <button class="stage" type="button" data-stage="plan"><span class="stage-number">03</span><span>Advice &amp; review</span></button>
+        </nav>
+
+        <div id="panel-patient" class="stage-panel">
+          <div class="panel-card">
+            <div class="card-head"><div class="card-icon">◷</div><div><h2>Consultation details</h2><p>When and how you saw the patient</p></div></div>
+            <div class="field-grid grid-3">
+              <label class="field"><span>Consultation date <em>*</em></span><input id="visit-date" type="date" data-field="visit.date" required></label>
+              <label class="field"><span>Consultation time <em>*</em></span><input id="visit-time" type="time" data-field="visit.time" required></label>
+              <div class="field"><span>Mode of consultation</span><div class="mode-switch" role="group" aria-label="Consultation mode"><button type="button" class="mode-button active" data-mode="Offline">In person</button><button type="button" class="mode-button" data-mode="Online">Online</button></div></div>
+            </div>
+          </div>
+          <div class="panel-card">
+            <div class="card-head"><div class="card-icon">♙</div><div><h2>Patient information</h2><p>Essential demographic and clinical details</p></div></div>
+            <div class="field-grid grid-2">
+              <label class="field full"><span>Patient full name <em>*</em></span><input type="text" id="patient-name" data-field="patient.name" placeholder="Enter patient name" autocomplete="off"></label>
+              <label class="field"><span>Age (years)</span><input type="number" min="0" max="130" step="any" data-field="patient.age" placeholder="e.g. 26"></label>
+              <label class="field"><span>Gender</span><select data-field="patient.gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option><option>Not specified</option></select></label>
+              <label class="field"><span>Weight (kg)</span><input type="number" min="0" step="any" data-field="patient.weight" placeholder="e.g. 80"></label>
+              <label class="field"><span>Height (cm)</span><input type="number" min="0" step="any" data-field="patient.height" placeholder="e.g. 170"></label>
+            </div>
+            <h3 class="subsection-title">Vital signs <span>Optional</span></h3>
+            <div class="field-grid grid-4">
+              <label class="field"><span>BP (mmHg)</span><input type="text" data-field="vitals.bp" placeholder="120/80"></label>
+              <label class="field"><span>Pulse (/min)</span><input type="text" data-field="vitals.pulse" placeholder="76"></label>
+              <label class="field"><span>SpO₂ (%)</span><input type="text" data-field="vitals.spo2" placeholder="98"></label>
+              <label class="field"><span>Temp (°C)</span><input type="text" data-field="vitals.temp" placeholder="37.0"></label>
+            </div>
+          </div>
+          <div class="panel-card">
+            <div class="card-head"><div class="card-icon">✚</div><div><h2>Clinical assessment</h2><p>Record the presenting concern and diagnosis</p></div></div>
+            <div class="field-grid">
+              <label class="field"><span>Clinical history / notes</span><textarea rows="3" data-field="history" placeholder="e.g. Fever × 2 days, cough, no dyspnoea"></textarea></label>
+              <label class="field"><span>Diagnosis / impression</span><textarea rows="2" data-field="diagnosis" placeholder="e.g. Acute febrile illness"></textarea></label>
+            </div>
+          </div>
+          <div class="stage-footer"><span>Step 1 of 3</span><button type="button" class="btn btn-primary" data-next="medicines">Continue to medicines <span aria-hidden="true">→</span></button></div>
+        </div>
+
+        <div id="panel-medicines" class="stage-panel" hidden>
+          <div class="panel-card">
+            <div class="card-head"><div class="card-icon">✧</div><div><h2>Medicine catalogue</h2><p>Search by brand or generic composition</p></div></div>
+            <div class="search-box"><span class="search-icon" aria-hidden="true">⌕</span><input id="medicine-search" type="search" autocomplete="off" spellcheck="false" placeholder="e.g. Allegra, amoxycillin, fexofenadine" aria-label="Search medicine brand or composition"><span class="search-shortcut">BRAND + GENERIC</span></div>
+            <div class="search-under"><span id="search-hint" aria-live="polite">Type at least two characters to start searching.</span><label class="toggle-label"><input type="checkbox" id="include-discontinued"> Show discontinued</label></div>
+            <div id="search-results" class="results-list" aria-live="polite"></div>
+            <div class="catalogue-footer"><span id="catalogue-stat">Loading catalogue info...</span><button type="button" class="text-button" id="btn-manual">+ Add custom medicine</button></div>
+          </div>
+          <div class="panel-card" id="selected-medicines-card">
+            <div class="card-head"><div class="card-icon">℞</div><div><h2>Prescribed medicines <span class="count-bubble" id="selected-count">0</span></h2><p>Set regimen, duration and patient instructions</p></div></div>
+            <div id="selected-medicines" class="selected-medicines"><div class="empty-state"><div class="empty-glyph">✚</div><strong>No medicines added yet</strong><p>Select a medicine from the catalogue or add one manually.</p></div></div>
+          </div>
+          <div class="safety-note"><strong>Clinical verification required.</strong> Brand, strength, formulation, interactions, allergies and dose must be independently confirmed by the prescribing clinician. Suggestions are formatting shortcuts, not dosing advice.</div>
+          <div class="stage-footer"><button type="button" class="btn btn-quiet" data-next="patient">← Back</button><button type="button" class="btn btn-primary" data-next="plan">Continue to advice <span aria-hidden="true">→</span></button></div>
+        </div>
+
+        <div id="panel-plan" class="stage-panel" hidden>
+          <div class="panel-card">
+            <div class="card-head"><div class="card-icon">☰</div><div><h2>Treatment plan &amp; advice</h2><p>Complete the prescription with investigations and review</p></div></div>
+            <div class="field-grid">
+              <label class="field"><span>General advice</span><textarea rows="3" data-field="plan.advice" placeholder="e.g. Drink plenty of water to maintain hydration"></textarea></label>
+              <label class="field"><span>Investigations</span><textarea rows="3" data-field="plan.investigations" placeholder="e.g. CBC, RFT, Serum Electrolytes"></textarea></label>
+              <label class="field"><span>Follow-up instructions</span><textarea rows="3" data-field="plan.followup" placeholder="e.g. Review in OPD after 3 days with reports"></textarea></label>
+              <label class="field"><span>Investigations / review date (optional)</span><input type="date" data-field="plan.reviewDate"></label>
+            </div>
+          </div>
+          <div class="panel-card compact-panel">
+            <div class="card-head"><div class="card-icon">⇩</div><div><h2>Finish &amp; export</h2><p>Print an A4 prescription or save an encrypted draft locally</p></div></div>
+            <div class="action-grid">
+              <button type="button" class="btn btn-primary" id="btn-print-panel">Print / Save PDF</button>
+              <button type="button" class="btn btn-outline" id="btn-export">Export encrypted draft</button>
+              <button type="button" class="btn btn-quiet" id="btn-import">Open encrypted draft</button>
+            </div>
+            <p class="helper-note">For PDF, choose <strong>Save as PDF</strong> in your browser print dialog. Nothing is sent to a prescription server.</p>
+          </div>
+          <div class="stage-footer"><button type="button" class="btn btn-quiet" data-next="medicines">← Back to medicines</button><button type="button" class="btn btn-primary" id="btn-preview-stage">View completed prescription →</button></div>
+        </div>
+      </section>
+
+      <aside class="preview-column" id="preview-column" aria-label="Live prescription preview">
+        <div class="preview-topbar"><div><span class="preview-eyebrow">LIVE DOCUMENT</span><h2>Prescription preview</h2></div><div class="preview-actions"><button type="button" class="btn btn-quiet btn-sm" id="btn-reference">Load sample</button><button type="button" class="btn btn-primary btn-sm" id="btn-print">Print / Save PDF ↗</button></div></div>
+        <div class="print-sheet-wrap">
+          <article id="prescription" class="prescription-sheet" aria-label="Prescription page">
+            <div class="rx-top-stripe"></div>
+            <header class="rx-header"><div class="rx-doctor"><h2 id="rx-doctor-name">Dr. Muhammad Shafi K</h2><div class="rx-quals" id="rx-quals">MBBS (Govt MC Thrissur) · DNB Anesthesia &amp; Critical Care Medicine (NBEMS)</div><span class="rx-reg" id="rx-reg">KSMC Reg No: 82692</span><div class="rx-clinic" id="rx-clinic" hidden></div></div><div class="rx-visit"><strong id="rx-mode">OP Consultation</strong><span id="rx-date">Date: —</span><span id="rx-time">Time: —</span></div></header>
+            <section class="rx-patient-bar"><div class="rx-info"><span class="rx-label">PATIENT NAME</span><strong id="rx-patient-name">—</strong></div><div class="rx-info"><span class="rx-label">AGE / GENDER</span><strong id="rx-age-gender">—</strong></div><div class="rx-info"><span class="rx-label">WEIGHT / HEIGHT</span><strong id="rx-weight-height">—</strong></div></section>
+            <div id="rx-vitals" class="rx-vitals"></div>
+            <section class="rx-assessment"><div><span class="rx-label">CLINICAL HISTORY</span><p id="rx-history">—</p></div><div><span class="rx-label">DIAGNOSIS</span><p id="rx-diagnosis">—</p></div></section>
+            <section class="rx-med-section"><h3><span class="rx-symbol">℞</span> PRESCRIBED MEDICATIONS</h3><div id="rx-medicines" class="rx-med-list"><p class="rx-muted">Medicines will appear here as you add them.</p></div></section>
+            <section class="rx-plan" id="rx-plan"><h3>TREATMENT PLAN &amp; ADVICE</h3><div id="rx-advice"></div></section>
+            <footer class="rx-sign"><strong id="rx-sign-name">Dr. Muhammad Shafi K</strong><span id="rx-sign-reg">KSMC Reg No: 82692</span></footer>
+            <div class="rx-page-footer"><span id="rx-footer-doctor">Dr. Muhammad Shafi K — Digital Medical Prescription</span><span>Generated for clinical review</span></div>
+          </article>
+        </div>
+        <div class="preview-note"><span aria-hidden="true">🔒</span> Preview is generated in this browser. Patient data is not automatically saved or uploaded.</div>
+      </aside>
+    </main>
+    <footer class="app-footer">Rx Studio <span>•</span> Prescription composer <span>•</span> Doctor review required before issuing</footer>
+  </div>
+
+  <button type="button" class="mobile-preview-btn" id="btn-mobile-preview">↗ Preview prescription</button>
+
+  <dialog id="profile-dialog" class="modal"><form method="dialog" id="profile-form"><div class="modal-header"><div><h2>Doctor profile</h2><p>Shown on every prescription · Saved only in your browser</p></div><button type="button" class="icon-button" data-close="profile-dialog" aria-label="Close">×</button></div><div class="modal-fields"><label class="field"><span>Doctor name</span><input name="name" type="text" required></label><label class="field"><span>Qualifications &amp; specialty</span><textarea name="credentials" rows="3"></textarea></label><label class="field"><span>Medical registration</span><input name="registration" type="text"></label><label class="field"><span>Clinic / hospital (optional)</span><input name="clinic" type="text"></label><label class="field"><span>Contact / address (optional)</span><input name="contact" type="text"></label></div><div class="modal-actions"><button type="button" class="btn btn-quiet" data-close="profile-dialog">Cancel</button><button type="submit" class="btn btn-primary" id="save-profile">Save doctor profile</button></div></form></dialog>
+  <input id="import-file" type="file" accept=".rxp,application/json" hidden>
+  <div role="status" id="toast" class="toast" aria-live="polite"></div>
+</body>
+</html>

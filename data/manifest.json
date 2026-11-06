@@ -1,0 +1,17 @@
+{
+  "dataset": "Extensive_A_Z_medicines_dataset_of_India.csv",
+  "source_rows": 256476,
+  "unique_formulations": 252751,
+  "discontinued_formulations": 7891,
+  "bucket_count": 865,
+  "prefix_length": 2,
+  "search_coverage": "brand name; short_composition1; short_composition2",
+  "disclaimer": "Dataset is not a prescribing authority. Confirm identity, strength, availability and suitability before use.",
+  "largest_bucket": [
+    "10",
+    57285,
+    6624387
+  ],
+  "total_uncompressed_index_bytes": 116069421,
+  "generated_from": "User-provided archive (1)(1).zip"
+}
