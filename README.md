@@ -6,7 +6,7 @@ Modern, browser-only prescription writing app for **Dr. Muhammad Shafi K**. Desi
 
 - Consultation date/time (auto-filled with local computer time, editable), online/offline consultation mode
 - Patient name, age, gender, weight, height, BP, pulse, oxygen saturation, temperature, clinical history, diagnosis
-- **252,751 deduplicated medicine/formulation records**, transformed from the uploaded 256,476-row Indian medicine dataset
+- **244,874 deduplicated medicine/formulation records**, transformed from the uploaded 256,476-row Indian medicine dataset
 - Search medicine **brand** or **generic (short_composition1 + short_composition2)** without a paid service, server or D1 configuration
 - Medicine results show brand, generic ingredients with strengths, pack and manufacturer; discontinued entries are hidden by default
 - Prescribe multiple drugs, amend brand/composition/formulation, remove or duplicate medicines
@@ -58,7 +58,7 @@ No NPM install or build step is necessary. The `data` directory **must** be depl
 
 ## How catalogue search works
 
-The included source dataset contains 256,476 rows. Identical `(name, composition1, composition2, pack label)` entries were deduplicated to **252,751 records**; some duplicate brand names are intentionally retained when strengths or packaging differ. 865 static JSON buckets index the first two characters of every meaningful brand/ingredient token. When typing `amoxy`, `allegra`, `montelukast`, or `clavulanic`, the app downloads only the matching prefix bucket then performs an in-browser prefix search. Display results are capped at 35 for responsiveness. The catalogue is a reference, not a clinically validated dosing guide; entries may be outdated.
+The included source dataset contains 256,476 rows. Identical `(name, composition1, composition2, pack label)` entries were deduplicated to **244,874 records**; some duplicate brand names are intentionally retained when strengths or packaging differ. 865 static JSON buckets index the first two characters of every meaningful brand/ingredient token. When typing `amoxy`, `allegra`, `montelukast`, or `clavulanic`, the app downloads only the matching prefix bucket then performs an in-browser prefix search. Display results are capped at 35 for responsiveness. The catalogue is a reference, not a clinically validated dosing guide; entries may be outdated.
 
 ## Clinical safety and privacy
 
@@ -70,3 +70,22 @@ The included source dataset contains 256,476 rows. Identical `(name, composition
 - Printing uses the browser's native A4 output. For PDFs, select "Save as PDF" and ensure A4 with background graphics enabled. Multi-page prescriptions may paginate automatically.
 - The site can be publicly reached on Cloudflare Pages, even though it does not transmit patient data. Production clinical deployment should be assessed for organisational access controls, privacy policy, audit, role-based permissions, formal clinical safety checks, and applicable local medical-record/telemedicine rules before patient use.
 - Do not publish an actual patient's prescription or medical data in the GitHub repository. The optional demo record is based on the supplied sample layout only.
+
+
+## Changes in V2 (November 2026)
+
+- Click/tap anywhere on a medicine result to add it; no + Add button.
+- All source rows flagged `Is_discontinued` are excluded from the published static search catalogue; no discontinued-medicine toggle. The database contains **244,874 unique active records** after filtering.
+- Numbered medicines in both the editor and PDF (1, 2, 3...).
+- Revised serif doctor-name header with clean sans-serif qualifications and consultation details.
+- Consultation mode retains **In person / Online** selection only.
+- Vitals use **BP, PR, RR, SpO₂, Temp**; units are displayed automatically (mmHg, /min, /min, %, °C). Do not type units into the entry fields.
+- Optional **PNG doctor signature** in Doctor profile, saved locally (browser storage) and displayed on print/PDF. PNG is validated and resized in the browser to avoid large storage usage.
+
+### Deployment instructions for Windows PowerShell
+
+1. Extract the ZIP and open PowerShell within that folder.
+2. Run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force` (temporary for that PowerShell window).
+3. Run `./PUSH_TO_GITHUB.ps1 -RepositoryUrl "https://github.com/infodrshafi-sudo/Rx-Studio-Medical-Prescription-Generator.git"` (replace with your actual GitHub URL if different). A Cloudflare Pages project connected to the branch should redeploy.
+
+The doctor profile/signature is local to the device/browser. It does not automatically sync between devices. Review medication composition, doses, and patient information before issuance; the catalogue is not a clinical decision-support database.

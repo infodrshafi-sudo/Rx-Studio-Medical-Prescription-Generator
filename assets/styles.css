@@ -3,3 +3,31 @@
 @media(max-width:1060px){.workspace{grid-template-columns:minmax(0,1fr);max-width:800px;margin:auto}.preview-column{position:relative;top:auto}.prescription-sheet{min-height:780px;padding:45px}.preview-topbar h2{font-size:19px}.preview-column{display:none}.preview-column.mobile-visible{display:block}.editor.mobile-hide{display:none}.mobile-preview-btn{display:block;position:fixed;bottom:17px;left:50%;transform:translateX(-50%);border:0;border-radius:99px;padding:13px 19px;background:#0e847d;color:#fff;box-shadow:0 8px 30px #08796f52;font-weight:800;font-size:12px;z-index:15}.app-footer{padding-bottom:65px}}
 @media(max-width:640px){.app-header{height:auto;min-height:70px;padding:12px 16px;align-items:flex-start}.brand-icon{width:39px;height:39px;font-size:28px}.brand-title{font-size:19px}.brand-subtitle{font-size:10px}.header-actions{flex-wrap:wrap;justify-content:flex-end;gap:2px}.header-actions .btn{font-size:10px;padding:8px}.privacy-chip{display:none}.top-context{padding:12px 17px}.context-right{display:none}.workspace{padding:22px 12px 40px}.section-hero{padding:0 7px}.section-hero h1{font-size:30px}.hero-glyph{font-size:48px}.lead{font-size:11px}.stage{font-size:10px;padding:12px 2px;gap:4px}.stage-number{font-size:9px}.stage-nav{gap:2px}.med-count{display:none}.panel-card{padding:16px;margin-bottom:12px}.grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3>.field:last-child{grid-column:1/-1}.grid-2{gap:12px}.card-head h2{font-size:16px}.card-head{margin-bottom:17px}.search-shortcut{display:none}.rx-header{gap:6px}.prescription-sheet{padding:22px;min-height:650px;font-size:9px}.rx-doctor h2{font-size:17px}.rx-quals{font-size:8px}.rx-visit{font-size:8px;min-width:72px}.rx-patient-bar{gap:6px;padding:10px 8px}.rx-info strong{font-size:9px}.rx-label{font-size:7px}.rx-med-regimen{min-width:66px}.rx-med-dose{font-size:8px;padding:3px 5px}.preview-topbar{flex-wrap:wrap}.preview-actions{margin-left:auto}.preview-note{font-size:10px}.stage-footer{flex-wrap:wrap}}
 @media print{@page{size:A4 portrait;margin:11mm}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}html,body{background:#fff!important;margin:0!important;padding:0!important;width:100%!important}body{font-family:Arial,"Segoe UI",sans-serif}body>#import-file{display:none!important}.app-header,.top-context,.editor,.preview-topbar,.preview-note,.app-footer,.mobile-preview-btn,.modal,.toast{display:none!important}.app-shell,.workspace,.preview-column,.print-sheet-wrap{display:block!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:#fff!important;max-width:none!important;min-height:0!important;position:static!important;overflow:visible!important}.prescription-sheet{display:flex!important;aspect-ratio:auto!important;box-shadow:none!important;border:0!important;border-radius:0!important;margin:0!important;padding:0!important;min-height:270mm!important;font-size:10pt;overflow:visible!important}.rx-doctor h2{font-size:20pt}.rx-quals{font-size:10pt}.rx-reg{font-size:9pt}.rx-visit,.rx-visit strong{font-size:10pt}.rx-label{font-size:8pt}.rx-info strong{font-size:12pt}.rx-patient-bar{padding:11px 14px}.rx-assessment p,.rx-med-title{font-size:11pt}.rx-med-generic,.rx-med-instruction,.rx-med-duration,.rx-plan p{font-size:9pt}.rx-med-dose{font-size:10pt}.rx-med-section h3{font-size:12pt}.rx-plan h3{font-size:10pt}.rx-sign strong{font-size:12pt}.rx-sign span{font-size:9pt}.rx-page-footer{font-size:8pt}.rx-plan,.rx-med-card,.rx-patient-bar,.rx-assessment{break-inside:avoid;page-break-inside:avoid}.rx-page-footer{break-inside:avoid}}
+
+/* Rx Studio v2 interface refinements */
+.rx-doctor h2{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.025em;font-weight:700;color:#183d59;line-height:1.22}
+.rx-quals{font-family:"Segoe UI",Arial,sans-serif;font-weight:550;letter-spacing:0}
+.rx-reg,.rx-clinic{font-family:"Segoe UI",Arial,sans-serif;letter-spacing:.01em}
+.rx-visit strong{font-family:"Segoe UI",Arial,sans-serif;letter-spacing:.025em}
+.result-item{width:100%;text-align:left;font:inherit;cursor:pointer;transition:border-color .15s,background .15s,transform .15s}
+.result-item:hover,.result-item:focus-visible{border-color:#68b8ad;background:#effaf7;transform:translateY(-1px);outline-offset:2px}
+.result-item>div{flex:1;min-width:0}
+.result-click-hint{font-size:21px;color:#138579;flex-shrink:0;padding-inline:7px}
+.active-only-chip{padding:5px 9px;border-radius:99px;background:#e5f6ef;color:#137b65;font-size:10px;font-weight:750;white-space:nowrap}
+.rx-med-serial{font-family:Georgia,serif;font-size:12px;font-weight:700;color:#207a7a;min-width:20px;flex-shrink:0;padding-top:1px}
+.rx-med-main{min-width:0;flex:1}
+.rx-signature-img{display:block;width:auto;height:auto;max-height:65px;max-width:175px;object-fit:contain;object-position:right bottom;margin-bottom:4px}
+.rx-signature-img[hidden]{display:none!important}
+.unit-input{display:flex;align-items:stretch;border:1px solid #dce6ec;border-radius:9px;overflow:hidden;background:#fff}
+.unit-input:focus-within{border-color:#159d90;box-shadow:0 0 0 3px #17a3961b}
+.unit-input input{border:0!important;box-shadow:none!important;border-radius:0!important;min-width:0;flex:1;width:100%;padding-right:3px}
+.unit-input>span{align-self:center;white-space:nowrap;font-size:10px;color:#587287;font-weight:700;padding:0 10px 0 3px}
+.signature-field{display:grid;gap:10px;border:1px solid #dce8e9;border-radius:12px;padding:13px;background:#f9fcfb}
+.signature-field-label{font-size:11px;font-weight:750;color:#3e5970}
+.signature-field input{font-size:11px}
+.signature-field small{color:#6f8695;font-size:10px;line-height:1.45}
+.signature-preview-wrap{min-height:68px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px dashed #b8cad4;border-radius:8px;padding:8px}
+.signature-preview-wrap img{max-width:100%;max-height:100px;object-fit:contain}
+.signature-preview-wrap>span{color:#94a5b4;font-size:11px}
+.signature-field .btn{justify-self:start}
+@media print{.rx-doctor h2{font-family:Georgia,"Times New Roman",serif;font-size:20pt;letter-spacing:-.015em}.rx-signature-img{max-height:18mm;max-width:48mm}.rx-med-serial{font-size:11pt}.rx-sign{margin-top:20px}}

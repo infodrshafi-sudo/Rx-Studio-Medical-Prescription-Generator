@@ -16,7 +16,7 @@
     <header class="app-header">
       <div class="brand-wrap">
         <div class="brand-icon" aria-hidden="true">℞</div>
-        <div><div class="brand-title">Rx Studio <span class="brand-version">01</span></div><div class="brand-subtitle">A calmer way to prescribe</div></div>
+        <div><div class="brand-title">Rx Studio <span class="brand-version">02</span></div><div class="brand-subtitle">A calmer way to prescribe</div></div>
       </div>
       <div class="header-actions">
         <span class="privacy-chip" title="Patient data stays in this browser session; it is not sent to a server"><span class="privacy-dot"></span> Browser-only patient data</span>
@@ -59,10 +59,11 @@
             </div>
             <h3 class="subsection-title">Vital signs <span>Optional</span></h3>
             <div class="field-grid grid-4">
-              <label class="field"><span>BP (mmHg)</span><input type="text" data-field="vitals.bp" placeholder="120/80"></label>
-              <label class="field"><span>Pulse (/min)</span><input type="text" data-field="vitals.pulse" placeholder="76"></label>
-              <label class="field"><span>SpO₂ (%)</span><input type="text" data-field="vitals.spo2" placeholder="98"></label>
-              <label class="field"><span>Temp (°C)</span><input type="text" data-field="vitals.temp" placeholder="37.0"></label>
+              <label class="field"><span>BP</span><div class="unit-input"><input type="text" data-field="vitals.bp" inputmode="text" placeholder="120/80"><span>mmHg</span></div></label>
+              <label class="field"><span>PR</span><div class="unit-input"><input type="number" min="0" data-field="vitals.pulse" placeholder="76"><span>/min</span></div></label>
+              <label class="field"><span>SpO₂</span><div class="unit-input"><input type="number" min="0" max="100" step="any" data-field="vitals.spo2" placeholder="98"><span>%</span></div></label>
+              <label class="field"><span>RR</span><div class="unit-input"><input type="number" min="0" step="1" data-field="vitals.rr" placeholder="16"><span>/min</span></div></label>
+              <label class="field"><span>Temp</span><div class="unit-input"><input type="number" step="any" data-field="vitals.temp" placeholder="37.0"><span>°C</span></div></label>
             </div>
           </div>
           <div class="panel-card">
@@ -79,7 +80,7 @@
           <div class="panel-card">
             <div class="card-head"><div class="card-icon">✧</div><div><h2>Medicine catalogue</h2><p>Search by brand or generic composition</p></div></div>
             <div class="search-box"><span class="search-icon" aria-hidden="true">⌕</span><input id="medicine-search" type="search" autocomplete="off" spellcheck="false" placeholder="e.g. Allegra, amoxycillin, fexofenadine" aria-label="Search medicine brand or composition"><span class="search-shortcut">BRAND + GENERIC</span></div>
-            <div class="search-under"><span id="search-hint" aria-live="polite">Type at least two characters to start searching.</span><label class="toggle-label"><input type="checkbox" id="include-discontinued"> Show discontinued</label></div>
+            <div class="search-under"><span id="search-hint" aria-live="polite">Type at least two characters to start searching.</span><span class="active-only-chip">Active medicines only</span></div>
             <div id="search-results" class="results-list" aria-live="polite"></div>
             <div class="catalogue-footer"><span id="catalogue-stat">Loading catalogue info...</span><button type="button" class="text-button" id="btn-manual">+ Add custom medicine</button></div>
           </div>
@@ -125,7 +126,7 @@
             <section class="rx-assessment"><div><span class="rx-label">CLINICAL HISTORY</span><p id="rx-history">—</p></div><div><span class="rx-label">DIAGNOSIS</span><p id="rx-diagnosis">—</p></div></section>
             <section class="rx-med-section"><h3><span class="rx-symbol">℞</span> PRESCRIBED MEDICATIONS</h3><div id="rx-medicines" class="rx-med-list"><p class="rx-muted">Medicines will appear here as you add them.</p></div></section>
             <section class="rx-plan" id="rx-plan"><h3>TREATMENT PLAN &amp; ADVICE</h3><div id="rx-advice"></div></section>
-            <footer class="rx-sign"><strong id="rx-sign-name">Dr. Muhammad Shafi K</strong><span id="rx-sign-reg">KSMC Reg No: 82692</span></footer>
+            <footer class="rx-sign"><img id="rx-signature-img" class="rx-signature-img" alt="Doctor’s uploaded signature" hidden><strong id="rx-sign-name">Dr. Muhammad Shafi K</strong><span id="rx-sign-reg">KSMC Reg No: 82692</span></footer>
             <div class="rx-page-footer"><span id="rx-footer-doctor">Dr. Muhammad Shafi K — Digital Medical Prescription</span><span>Generated for clinical review</span></div>
           </article>
         </div>
@@ -137,7 +138,7 @@
 
   <button type="button" class="mobile-preview-btn" id="btn-mobile-preview">↗ Preview prescription</button>
 
-  <dialog id="profile-dialog" class="modal"><form method="dialog" id="profile-form"><div class="modal-header"><div><h2>Doctor profile</h2><p>Shown on every prescription · Saved only in your browser</p></div><button type="button" class="icon-button" data-close="profile-dialog" aria-label="Close">×</button></div><div class="modal-fields"><label class="field"><span>Doctor name</span><input name="name" type="text" required></label><label class="field"><span>Qualifications &amp; specialty</span><textarea name="credentials" rows="3"></textarea></label><label class="field"><span>Medical registration</span><input name="registration" type="text"></label><label class="field"><span>Clinic / hospital (optional)</span><input name="clinic" type="text"></label><label class="field"><span>Contact / address (optional)</span><input name="contact" type="text"></label></div><div class="modal-actions"><button type="button" class="btn btn-quiet" data-close="profile-dialog">Cancel</button><button type="submit" class="btn btn-primary" id="save-profile">Save doctor profile</button></div></form></dialog>
+  <dialog id="profile-dialog" class="modal"><form method="dialog" id="profile-form"><div class="modal-header"><div><h2>Doctor profile</h2><p>Shown on every prescription · Saved only in your browser</p></div><button type="button" class="icon-button" data-close="profile-dialog" aria-label="Close">×</button></div><div class="modal-fields"><label class="field"><span>Doctor name</span><input name="name" type="text" required></label><label class="field"><span>Qualifications &amp; specialty</span><textarea name="credentials" rows="3"></textarea></label><label class="field"><span>Medical registration</span><input name="registration" type="text"></label><label class="field"><span>Clinic / hospital (optional)</span><input name="clinic" type="text"></label><label class="field"><span>Contact / address (optional)</span><input name="contact" type="text"></label><div class="signature-field"><span class="signature-field-label">Doctor signature · PNG image (optional)</span><input type="file" id="signature-file" accept=".png,image/png"><div class="signature-preview-wrap"><img id="signature-profile-preview" alt="Uploaded doctor signature preview" hidden><span id="signature-empty">No signature uploaded</span></div><button type="button" class="btn btn-quiet btn-sm" id="remove-signature">Remove signature</button><small>Saved only in this browser with the doctor profile; included on printed prescriptions.</small></div></div><div class="modal-actions"><button type="button" class="btn btn-quiet" data-close="profile-dialog">Cancel</button><button type="submit" class="btn btn-primary" id="save-profile">Save doctor profile</button></div></form></dialog>
   <input id="import-file" type="file" accept=".rxp,application/json" hidden>
   <div role="status" id="toast" class="toast" aria-live="polite"></div>
 </body>
